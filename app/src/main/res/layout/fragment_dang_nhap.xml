@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+
         <variable
             name="DangNhapViewModel"
             type="com.example.ngay_8_4_2021.dangnhap.DangNhapViewModel" />
     </data>
+
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -28,6 +31,7 @@
                 android:ems="10"
                 android:hint="Tài khoản"
                 android:inputType="textPersonName"
+                android:text="@={DangNhapViewModel.username}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView5" />
@@ -43,6 +47,7 @@
                 android:ems="10"
                 android:hint="Mật khẩu"
                 android:inputType="textPassword"
+                android:text="@={DangNhapViewModel.password}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edt_dn_tentk" />
@@ -55,6 +60,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="32dp"
                 android:background="@drawable/custom_button_1"
+                android:onClick="@{() -> DangNhapViewModel.onClickDangNhap()}"
                 android:text="đăng nhập"
                 android:textColor="@color/white"
                 android:textSize="22dp"
@@ -79,6 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:onClick="@{()->DangNhapViewModel.onClickChuyenSangDangKy()}"
                 android:text="Đăng ký"
                 android:textColor="#FF0000"
                 app:layout_constraintBottom_toBottomOf="@+id/textView2"
@@ -117,6 +124,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="32dp"
                 android:text="Nhớ đăng nhập"
+                android:checked="@{DangNhapViewModel.checkGhiNho}"
                 app:layout_constraintEnd_toEndOf="@+id/btn_dangnhap"
                 app:layout_constraintTop_toBottomOf="@+id/btn_dangnhap" />
 

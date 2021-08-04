@@ -3,38 +3,31 @@ package com.example.ngay_8_4_2021.dangnhap;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.MutableLiveData;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
 import com.example.ngay_8_4_2021.MainActivity;
 import com.example.ngay_8_4_2021.R;
-import com.example.ngay_8_4_2021.repository.Repository;
+import com.example.ngay_8_4_2021.databinding.FragmentDangNhapBinding;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Base64;
 
-import io.reactivex.disposables.CompositeDisposable;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-//import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-//import io.reactivex.rxjava3.core.Observable;
-//import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -44,8 +37,8 @@ import okhttp3.RequestBody;
 public class DangNhapFragment extends Fragment {
 
     EditText edt_tentk, edt_mk;
-    Button btn_dangnhap;
-    TextView tv_dangky;
+//    Button btn_dangnhap;
+//    TextView tv_dangky;
     View view;
     CheckBox cb_remember;
 
@@ -56,9 +49,9 @@ public class DangNhapFragment extends Fragment {
 
     final int[] checkFirstTime = {1};
 
-    CompositeDisposable compositeDisposable;
-    MutableLiveData<Boolean> loading;
-    private final Repository repository;
+//    CompositeDisposable compositeDisposable;
+//    MutableLiveData<Boolean> loading;
+//    private final Repository repository;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -71,7 +64,7 @@ public class DangNhapFragment extends Fragment {
     private String mParam2;
 
     public DangNhapFragment() {
-        this.repository = new Repository();
+//        this.repository = new Repository();
     }
 
     /**
@@ -106,89 +99,96 @@ public class DangNhapFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_dang_nhap, container, false);
+        FragmentDangNhapBinding dangNhapBinding = DataBindingUtil.inflate(
+                inflater, R.layout.fragment_dang_nhap, container, false);
+        DangNhapViewModel dangNhapViewModel = new DangNhapViewModel();
+        dangNhapBinding.setDangNhapViewModel(dangNhapViewModel);
 
-        compositeDisposable = new CompositeDisposable();
-        loading = new MutableLiveData<>();
+//        compositeDisposable = new CompositeDisposable();
+//        loading = new MutableLiveData<>();
 
         mMainActivity = (MainActivity) getActivity();
         fragmentManager = mMainActivity.getSupportFragmentManager();
         anhxa();
 
+        // tao encrypt cho sharedpreferences
+        taoEncryptChoSharedPreferences();
+        // lay du lieu dang nhap tu sharedpreferences
         layDuLieuDangNhapTuSharedPreferences();
 
-        clickDangNhap();
-        clickDangky();
+//        clickDangNhap();
+//        clickDangky();
 
         return view;
     }
 
-    private void clickDangNhap() {
-        btn_dangnhap.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onClick(View v) {
-                String tentk = edt_tentk.getText().toString().trim();
-                String mk = edt_mk.getText().toString().trim();
-                String str = tentk + ":" + mk;
-                if (!CheckInput(tentk, mk)) {
-                    return;
-                }
-                String str2 = Base64.getEncoder().encodeToString(str.getBytes());
-                String encodedString = "Basic " + str2;
-
-                String strRequestBody = "body";
-                RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), strRequestBody);
-
-                // rxjava
-                ThucHienDangNhap(encodedString, requestBody, tentk, mk);
-
-            }
-        });
-    }
-
-    private void ThucHienDangNhap(String encodedString, RequestBody requestBody, String tentk, String mk) {
-        compositeDisposable.add(repository.dangNhapObservable(encodedString, requestBody)
-                .doOnSubscribe(disposable -> {
-                    loading.setValue(true);
-                })
-                .doFinally(() -> {
-                    loading.setValue(false);
-                })
-                .subscribe(
-                        responseBody -> {
-                            Toast.makeText(mMainActivity, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                            fragmentManager.beginTransaction()
-                                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                                    .replace(R.id.fragment_container, mMainActivity.homeFragment)
-                                    .addToBackStack(null)
-                                    .commit();
-                            luuDangNhapVaoSharedPreferences(tentk, mk);
-                        },
-                        throwable -> {
-                            // xử lý lỗi
-                            Log.v("myLog", "err " + throwable.getLocalizedMessage());
-                            Toast.makeText(mMainActivity, "Thông tin không chính xác", Toast.LENGTH_SHORT).show();
-                        }
-                ));
-    }
-
-    private void luuDangNhapVaoSharedPreferences(String tentk, String mk) {
-        if (cb_remember.isChecked()) {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("Login_tentaikhoan", tentk);
-            editor.putString("Login_matkhau", mk);
-            editor.putBoolean("Login_nhodangnhap", true);
-            editor.apply();
-        } else {
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.remove("Login_tentaikhoan");
-            editor.remove("Login_matkhau");
-            editor.remove("Login_nhodangnhap");
-            editor.apply();
-        }
-    }
-
-
+//    private void clickDangNhap() {
+//        btn_dangnhap.setOnClickListener(new View.OnClickListener() {
+//            @RequiresApi(api = Build.VERSION_CODES.O)
+//            @Override
+//            public void onClick(View v) {
+//                String tentk = edt_tentk.getText().toString().trim();
+//                String mk = edt_mk.getText().toString().trim();
+//                String str = tentk + ":" + mk;
+//                if (!CheckInput(tentk, mk)) {
+//                    return;
+//                }
+//                String str2 = Base64.getEncoder().encodeToString(str.getBytes());
+//                String encodedString = "Basic " + str2;
+//
+//                String strRequestBody = "body";
+//                RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), strRequestBody);
+//
+//                // rxjava
+//                ThucHienDangNhap(encodedString, requestBody, tentk, mk);
+//
+//            }
+//        });
+//    }
+//
+//    private void ThucHienDangNhap(String encodedString, RequestBody requestBody, String tentk, String mk) {
+//        compositeDisposable.add(repository.dangNhapObservable(encodedString, requestBody)
+//                .doOnSubscribe(disposable -> {
+//                    loading.setValue(true);
+//                })
+//                .doFinally(() -> {
+//                    loading.setValue(false);
+//                })
+//                .subscribe(
+//                        responseBody -> {
+//                            Toast.makeText(mMainActivity, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+//                            fragmentManager.beginTransaction()
+//                                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+//                                    .replace(R.id.fragment_container, mMainActivity.homeFragment)
+//                                    .addToBackStack(null)
+//                                    .commit();
+//                            luuDangNhapVaoSharedPreferences(tentk, mk);
+//                        },
+//                        throwable -> {
+//                            // xử lý lỗi
+//                            Log.v("myLog", "err " + throwable.getLocalizedMessage());
+//                            Toast.makeText(mMainActivity, "Thông tin không chính xác", Toast.LENGTH_SHORT).show();
+//                        }
+//                ));
+//    }
+//
+//    private void luuDangNhapVaoSharedPreferences(String tentk, String mk) {
+//        if (cb_remember.isChecked()) {
+//            SharedPreferences.Editor editor = sharedPreferences.edit();
+//            editor.putString("Login_tentaikhoan", tentk);
+//            editor.putString("Login_matkhau", mk);
+//            editor.putBoolean("Login_nhodangnhap", true);
+//            editor.apply();
+//        } else {
+//            SharedPreferences.Editor editor = sharedPreferences.edit();
+//            editor.remove("Login_tentaikhoan");
+//            editor.remove("Login_matkhau");
+//            editor.remove("Login_nhodangnhap");
+//            editor.apply();
+//        }
+//    }
+//
+//
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void layDuLieuDangNhapTuSharedPreferences() {
         // Lấy thông tin đăng nhập và gán lên các edittext.
@@ -210,7 +210,8 @@ public class DangNhapFragment extends Fragment {
         RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), strRequestBody);
 
         if (!tentaikhoan.equals("") && !matkhau.equals("") && checkFirstTime[0] == 1) {
-            ThucHienDangNhap(encodedString, requestBody, tentaikhoan, matkhau);
+         //   ThucHienDangNhap(encodedString, requestBody, tentaikhoan, matkhau);
+            Toast.makeText(mMainActivity, "dang nhap voi thong tin tu sharedpreferences", Toast.LENGTH_SHORT).show();
             checkFirstTime[0] = 2;
         }
 
@@ -234,36 +235,36 @@ public class DangNhapFragment extends Fragment {
         }
     }
 
-    private boolean CheckInput(String tentk, String mk) {
-        if (tentk.isEmpty() || mk.isEmpty() || mk.length() < 6) {
-            Toast.makeText(mMainActivity, "Bạn chưa nhập thông tin" + "\nMật khẩu phải có ít nhất 6 ký tự", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
-    }
-
-    private void clickDangky() {
-        tv_dangky.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                fragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                        .replace(R.id.fragment_container, mMainActivity.dangKyFragment)
-                        .addToBackStack(null)
-                        .commit();
-            }
-        });
-
-    }
-
+//    private boolean CheckInput(String tentk, String mk) {
+//        if (tentk.isEmpty() || mk.isEmpty() || mk.length() < 6) {
+//            Toast.makeText(mMainActivity, "Bạn chưa nhập thông tin" + "\nMật khẩu phải có ít nhất 6 ký tự", Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
+//        return true;
+//    }
+//
+//    private void clickDangky() {
+//        tv_dangky.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                fragmentManager.beginTransaction()
+//                        .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+//                        .replace(R.id.fragment_container, mMainActivity.dangKyFragment)
+//                        .addToBackStack(null)
+//                        .commit();
+//            }
+//        });
+//
+//    }
+//
     private void anhxa() {
         edt_tentk = view.findViewById(R.id.edt_dn_tentk);
         edt_mk = view.findViewById(R.id.edt_dn_mk);
-        btn_dangnhap = view.findViewById(R.id.btn_dangnhap);
-        tv_dangky = view.findViewById(R.id.tv_dangky);
+//        btn_dangnhap = view.findViewById(R.id.btn_dangnhap);
+//        tv_dangky = view.findViewById(R.id.tv_dangky);
         cb_remember = view.findViewById(R.id.checkBox_remember_dangnhap);
 
         // tạo Encrypt cho SharedPreferences
-        taoEncryptChoSharedPreferences();
+
     }
 }
