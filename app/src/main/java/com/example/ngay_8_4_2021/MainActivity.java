@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.ngay_8_4_2021.custom.LoadingDialog;
-import com.example.ngay_8_4_2021.dangki.DangKyFragment;
+import com.example.ngay_8_4_2021.dangky.DangKyFragment;
 import com.example.ngay_8_4_2021.dangnhap.DangNhapFragment;
 import com.example.ngay_8_4_2021.home.HomeFragment;
 
@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     public LoadingDialog loadingDialog;
 
+    private static MainActivity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,4 +38,9 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.fragment_container,dangNhapFragment)
                 .commit();
     }
+
+    public static MainActivity getInstance() {
+        return instance;
+    }
+
 }

@@ -1,28 +1,25 @@
-package com.example.ngay_8_4_2021.dangnhap;
+package com.example.ngay_8_4_2021.dangky;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.ngay_8_4_2021.MainActivity;
 import com.example.ngay_8_4_2021.R;
-import com.example.ngay_8_4_2021.databinding.FragmentDangNhapBinding;
-
+import com.example.ngay_8_4_2021.databinding.FragmentDangKyBinding;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link DangNhapFragment#newInstance} factory method to
+ * Use the {@link DangKyFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DangNhapFragment extends Fragment {
+public class DangKyFragment extends Fragment {
 
     MainActivity mMainActivity;
     FragmentManager fragmentManager;
@@ -36,8 +33,7 @@ public class DangNhapFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public DangNhapFragment() {
-
+    public DangKyFragment() {
     }
 
     /**
@@ -46,11 +42,11 @@ public class DangNhapFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment DangNhapFragment.
+     * @return A new instance of fragment DangKyFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DangNhapFragment newInstance(String param1, String param2) {
-        DangNhapFragment fragment = new DangNhapFragment();
+    public static DangKyFragment newInstance(String param1, String param2) {
+        DangKyFragment fragment = new DangKyFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -67,7 +63,6 @@ public class DangNhapFragment extends Fragment {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -75,41 +70,46 @@ public class DangNhapFragment extends Fragment {
         mMainActivity = (MainActivity) getActivity();
         fragmentManager = mMainActivity.getSupportFragmentManager();
 
-        FragmentDangNhapBinding dangNhapBinding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_dang_nhap, container, false);
-        View view = dangNhapBinding.getRoot();
-        DangNhapViewModel dangNhapViewModel = new DangNhapViewModel(mMainActivity);
-        dangNhapBinding.setDangNhapViewModel(dangNhapViewModel);
+        FragmentDangKyBinding dangKyBinding = DataBindingUtil.inflate(
+                inflater, R.layout.fragment_dang_ky, container, false);
+        View view = dangKyBinding.getRoot();
+        DangKyViewModel dangKyViewModel = new DangKyViewModel();
+        dangKyBinding.setDangKyViewModel(dangKyViewModel);
 
-        // response
-        dangNhapViewModel.getResponseBodyMutableLiveData()
+        // reponse
+        dangKyViewModel.getResponseBodyMutableLiveData()
                 .observe(mMainActivity, responseBody -> {
-                    Toast.makeText(mMainActivity, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mMainActivity, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                            .replace(R.id.fragment_container, mMainActivity.homeFragment)
+                            .replace(R.id.fragment_container, mMainActivity.dangNhapFragment)
                             .addToBackStack(null)
                             .commit();
                 });
 
         // throwable
-        dangNhapViewModel.getThrowableMutableLiveData()
+        dangKyViewModel.getThrowableMutableLiveData()
                 .observe(mMainActivity, throwable -> {
-                    Toast.makeText(mMainActivity, "Thông tin không chính xác", Toast.LENGTH_SHORT).show();
+                    String error = throwable.getLocalizedMessage().toLowerCase().trim();
+                    if (error.equals("HTTP 409".toLowerCase())) {
+                        Toast.makeText(mMainActivity, "Tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(mMainActivity, "Đã xảy ra lỗi", Toast.LENGTH_SHORT).show();
+                    }
                 });
 
-        // chuyen sang trang dang ky
-        dangNhapViewModel.getChuyenSangDangKy()
+        // chuyen sang trang dang nhap
+        dangKyViewModel.getChuyenSangDangNhap()
                 .observe(mMainActivity, integer -> {
                     fragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                            .replace(R.id.fragment_container, mMainActivity.dangKyFragment)
+                            .replace(R.id.fragment_container, mMainActivity.dangNhapFragment)
                             .addToBackStack(null)
                             .commit();
                 });
 
         // check input nguoi dung
-        dangNhapViewModel.getCheckInput()
+        dangKyViewModel.getCheckInput()
                 .observe(mMainActivity, integer -> {
                     Toast.makeText(mMainActivity, "Không được để trống thông tin" + "\n" + "Mật khẩu phải có ít nhất 6 ký tự", Toast.LENGTH_SHORT).show();
                 });
