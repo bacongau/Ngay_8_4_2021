@@ -6,13 +6,11 @@ import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
-import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
-import com.example.ngay_8_4_2021.BR;
 import com.example.ngay_8_4_2021.repository.Repository;
 
 import java.io.IOException;
@@ -24,7 +22,7 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 
-public class DangNhapViewModel extends BaseObservable {
+public class DangNhapViewModel extends ViewModel {
 
     // khai báo
     private String username;
@@ -37,7 +35,7 @@ public class DangNhapViewModel extends BaseObservable {
     private final MutableLiveData<Integer> checkInput = new MutableLiveData<>();
 
     CompositeDisposable compositeDisposable = new CompositeDisposable();
-    MutableLiveData<Boolean> loading = new MutableLiveData<>();
+    private MutableLiveData<Boolean> loading = new MutableLiveData<>();
     private final Repository repository;
 
     SharedPreferences sharedPreferences;
@@ -80,18 +78,20 @@ public class DangNhapViewModel extends BaseObservable {
         return throwableMutableLiveData;
     }
 
+    public MutableLiveData<Boolean> getLoading() {
+        return loading;
+    }
+
     public MutableLiveData<ResponseBody> getResponseBodyMutableLiveData() {
         return responseBodyMutableLiveData;
     }
 
-    @Bindable
     public Boolean getCheckGhiNho() {
         return checkGhiNho;
     }
 
     public void setCheckGhiNho(Boolean checkGhiNho) {
         this.checkGhiNho = checkGhiNho;
-        notifyPropertyChanged(BR.checkGhiNho);
     }
 
     public String getUsername() {

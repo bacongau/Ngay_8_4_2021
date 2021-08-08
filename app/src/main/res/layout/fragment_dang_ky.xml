@@ -119,7 +119,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/edt_dk_sodt" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/tv_clothes_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -140,9 +140,9 @@
                 android:onClick="@{()->DangKyViewModel.onClickChuyenSangDangNhap()}"
                 android:text="Đăng nhập"
                 android:textColor="#FF0000"
-                app:layout_constraintBottom_toBottomOf="@+id/textView"
-                app:layout_constraintStart_toEndOf="@+id/textView"
-                app:layout_constraintTop_toTopOf="@+id/textView" />
+                app:layout_constraintBottom_toBottomOf="@+id/tv_clothes_name"
+                app:layout_constraintStart_toEndOf="@+id/tv_clothes_name"
+                app:layout_constraintTop_toTopOf="@+id/tv_clothes_name" />
 
             <TextView
                 android:id="@+id/textView4"

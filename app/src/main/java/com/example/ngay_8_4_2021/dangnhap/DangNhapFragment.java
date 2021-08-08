@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.ngay_8_4_2021.MainActivity;
 import com.example.ngay_8_4_2021.R;
+import com.example.ngay_8_4_2021.custom.LoadingDialog;
 import com.example.ngay_8_4_2021.databinding.FragmentDangNhapBinding;
 
 
@@ -26,6 +27,7 @@ public class DangNhapFragment extends Fragment {
 
     MainActivity mMainActivity;
     FragmentManager fragmentManager;
+    LoadingDialog loadingDialog;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -81,6 +83,8 @@ public class DangNhapFragment extends Fragment {
         DangNhapViewModel dangNhapViewModel = new DangNhapViewModel(mMainActivity);
         dangNhapBinding.setDangNhapViewModel(dangNhapViewModel);
 
+        loadingDialog = new LoadingDialog(mMainActivity);
+
         // response
         dangNhapViewModel.getResponseBodyMutableLiveData()
                 .observe(mMainActivity, responseBody -> {
@@ -112,6 +116,18 @@ public class DangNhapFragment extends Fragment {
         dangNhapViewModel.getCheckInput()
                 .observe(mMainActivity, integer -> {
                     Toast.makeText(mMainActivity, "Không được để trống thông tin" + "\n" + "Mật khẩu phải có ít nhất 6 ký tự", Toast.LENGTH_SHORT).show();
+                });
+
+        // an hien loading
+        dangNhapViewModel.getLoading()
+                .observe(mMainActivity, isLoading -> {
+                    if(isLoading != null){
+                        if(isLoading){
+                            loadingDialog.show();
+                        }else {
+                            loadingDialog.hide();
+                        }
+                    }
                 });
 
         return view;

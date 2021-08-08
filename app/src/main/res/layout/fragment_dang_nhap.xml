@@ -69,7 +69,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/edt_dn_mk" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tv_clothes_category"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
@@ -88,12 +88,12 @@
                 android:onClick="@{()->DangNhapViewModel.onClickChuyenSangDangKy()}"
                 android:text="Đăng ký"
                 android:textColor="#FF0000"
-                app:layout_constraintBottom_toBottomOf="@+id/textView2"
-                app:layout_constraintStart_toEndOf="@+id/textView2"
-                app:layout_constraintTop_toTopOf="@+id/textView2" />
+                app:layout_constraintBottom_toBottomOf="@+id/tv_clothes_category"
+                app:layout_constraintStart_toEndOf="@+id/tv_clothes_category"
+                app:layout_constraintTop_toTopOf="@+id/tv_clothes_category" />
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/img_clothes_logo"
                 android:layout_width="388dp"
                 android:layout_height="72dp"
                 android:layout_marginTop="32dp"
@@ -101,7 +101,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                app:layout_constraintTop_toBottomOf="@+id/tv_clothes_category"
                 app:srcCompat="@drawable/loginfb" />
 
             <TextView

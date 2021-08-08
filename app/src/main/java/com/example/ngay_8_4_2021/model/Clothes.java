@@ -1,5 +1,8 @@
 package com.example.ngay_8_4_2021.model;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class Clothes {
     private String id;
     private String name;
@@ -36,8 +39,12 @@ public class Clothes {
         this.name = name;
     }
 
-    public int getPrice() {
-        return price;
+    public String getPrice() {
+        Locale localeVN = new Locale("vi", "VN");
+        NumberFormat currencyVN = NumberFormat.getCurrencyInstance(localeVN);
+        String vnd = currencyVN.format(price);
+
+        return vnd;
     }
 
     public void setPrice(int price) {
