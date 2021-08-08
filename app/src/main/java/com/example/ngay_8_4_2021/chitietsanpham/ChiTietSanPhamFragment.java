@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.bumptech.glide.Glide;
 import com.example.ngay_8_4_2021.MainActivity;
 import com.example.ngay_8_4_2021.R;
 import com.example.ngay_8_4_2021.databinding.FragmentChiTietSanPhamBinding;
@@ -45,7 +46,12 @@ public class ChiTietSanPhamFragment extends Fragment {
         // lay ra response sau khi call api
         chiTietSanPhamViewModel.getResponseChiTietSanPhamMutableLiveData()
                 .observe(mainActivity,responseChiTietSanPham -> {
-
+                    Glide
+                            .with(mainActivity)
+                            .load(responseChiTietSanPham.getData().getLogoUrl())
+                            .centerCrop()
+                            .placeholder(R.drawable.ic_launcher_background)
+                            .into(chiTietSanPhamBinding.logoUrl);
                 });
 
         // lay ra throwable
@@ -53,6 +59,15 @@ public class ChiTietSanPhamFragment extends Fragment {
                 .observe(mainActivity,throwable -> {
                     Log.d("zzzzzz", "throwable:  " + throwable.getLocalizedMessage());
                 });
+
+        // back ve man hinh danh sach san pham
+        chiTietSanPhamBinding.backToListProduct.setOnClickListener(v -> {
+            fragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.fragment_container, mainActivity.homeFragment)
+                    .addToBackStack(null)
+                    .commit();
+        });
 
 
         return view;

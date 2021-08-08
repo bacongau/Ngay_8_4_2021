@@ -8,4 +8,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red_favorite">#E94F46</color>
+    <color name="color_toolbar">#29B5E3</color>
 </resources>

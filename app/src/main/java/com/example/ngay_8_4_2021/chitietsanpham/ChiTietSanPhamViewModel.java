@@ -42,6 +42,7 @@ public class ChiTietSanPhamViewModel extends ViewModel {
         return description;
     }
 
+
     public MutableLiveData<ResponseChiTietSanPham> getResponseChiTietSanPhamMutableLiveData() {
         return responseChiTietSanPhamMutableLiveData;
     }
@@ -72,9 +73,9 @@ public class ChiTietSanPhamViewModel extends ViewModel {
 
                             name.set(chiTietSanPham.getName());
                             price.set(chiTietSanPham.getPrice());
-                            if (chiTietSanPham.getDescription() != null){
+                            if (chiTietSanPham.getDescription() != null) {
                                 description.set(String.valueOf(Html.fromHtml(chiTietSanPham.getDescription())));
-                            }else {
+                            } else {
                                 description.set(chiTietSanPham.getDescription());
                             }
                         },
