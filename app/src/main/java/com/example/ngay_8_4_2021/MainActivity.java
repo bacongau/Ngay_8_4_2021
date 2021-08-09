@@ -6,11 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.ngay_8_4_2021.chitietsanpham.ChiTietSanPhamFragment;
+import com.example.ngay_8_4_2021.ui.chitietsanpham.ChiTietSanPhamFragment;
 import com.example.ngay_8_4_2021.custom.LoadingDialog;
-import com.example.ngay_8_4_2021.dangky.DangKyFragment;
-import com.example.ngay_8_4_2021.dangnhap.DangNhapFragment;
-import com.example.ngay_8_4_2021.home.HomeFragment;
+import com.example.ngay_8_4_2021.ui.dangky.DangKyFragment;
+import com.example.ngay_8_4_2021.ui.dangnhap.DangNhapFragment;
+import com.example.ngay_8_4_2021.ui.home.HomeFragment;
 
 public class MainActivity extends AppCompatActivity implements HomeFragment.ISendIdClothesListener {
     FragmentManager fragmentManager;

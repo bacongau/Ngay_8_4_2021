@@ -1,4 +1,4 @@
-package com.example.ngay_8_4_2021.dangnhap;
+package com.example.ngay_8_4_2021.ui.dangnhap;
 
 import android.os.Build;
 import android.os.Bundle;

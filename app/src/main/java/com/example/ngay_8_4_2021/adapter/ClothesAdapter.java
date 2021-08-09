@@ -43,13 +43,15 @@ public class ClothesAdapter extends RecyclerView.Adapter<ClothesAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item_danhsachsp, parent, false);
+
+
         return new ViewHolder(view, mListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Clothes clothes = arrayList.get(position);
-        ((ViewHolder) holder).setData(clothes);
+        holder.setData(clothes);
     }
 
     @Override

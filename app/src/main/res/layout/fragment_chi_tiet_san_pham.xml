@@ -7,14 +7,14 @@
 
         <variable
             name="ChiTietSanPhamViewModel"
-            type="com.example.ngay_8_4_2021.chitietsanpham.ChiTietSanPhamViewModel" />
+            type="com.example.ngay_8_4_2021.ui.chitietsanpham.ChiTietSanPhamViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#fff"
-        tools:context=".chitietsanpham.ChiTietSanPhamFragment">
+        tools:context=".ui.chitietsanpham.ChiTietSanPhamFragment">
 
 
         <com.google.android.material.appbar.AppBarLayout

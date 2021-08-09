@@ -1,4 +1,4 @@
-package com.example.ngay_8_4_2021.home;
+package com.example.ngay_8_4_2021.ui.home;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -53,8 +53,8 @@ public class HomeFragmentViewModel extends ViewModel {
         return responseDanhSachClothesMutableLiveData;
     }
 
-    public void getDanhSachClothes() {
-        compositeDisposable.add(repository.getListClothesObservable(0, 10, "createdDate", "desc")
+    public void getDanhSachClothes(int pageIndex) {
+        compositeDisposable.add(repository.getListClothesObservable(pageIndex)
                 .doOnSubscribe(disposable -> {
                     //showLoading
                     loading.setValue(true);

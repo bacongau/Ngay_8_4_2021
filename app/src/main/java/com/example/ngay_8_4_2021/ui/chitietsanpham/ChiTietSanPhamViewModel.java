@@ -1,4 +1,4 @@
-package com.example.ngay_8_4_2021.chitietsanpham;
+package com.example.ngay_8_4_2021.ui.chitietsanpham;
 
 import android.text.Html;
 

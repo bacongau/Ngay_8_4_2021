@@ -1,4 +1,4 @@
-package com.example.ngay_8_4_2021.dangnhap;
+package com.example.ngay_8_4_2021.ui.dangnhap;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -22,11 +22,8 @@ public interface ApiService {
     Single<ResponseBody> dangKyCustomer(@Header("Authorization") String encodedString, @Body Customer customer);
 
     // https://36a30a965086.ngrok.io/api/products/clothes?pageIndex=0&pageSize=10&sortBy=createdDate&sortType=desc
-    @GET("/api/products/clothes")
-    Single<ResponseDanhSachClothes> getListClothes(@Query("pageIndex") int pageIndex,
-                                                       @Query("pageSize") int pageSize,
-                                                       @Query("sortBy") String sortBy,
-                                                       @Query("sortType") String sortType);
+    @GET("/api/products/clothes?")
+    Single<ResponseDanhSachClothes> getListClothes(@Query("pageIndex") int pageIndex);
 
     // https://36a30a965086.ngrok.io/api/products/clothes/55a70880-ced5-4bac-9ef4-0a1ea9677a59
     @GET("/api/products/clothes/{id}")

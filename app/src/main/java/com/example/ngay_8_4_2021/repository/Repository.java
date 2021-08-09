@@ -31,8 +31,8 @@ public class Repository {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Single<ResponseDanhSachClothes> getListClothesObservable(int pageIndex, int pageSize, String sortBy, String sortType){
-        return apiService.getListClothes(pageIndex,pageSize,sortBy,sortType)
+    public Single<ResponseDanhSachClothes> getListClothesObservable(int pageIndex){
+        return apiService.getListClothes(pageIndex)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

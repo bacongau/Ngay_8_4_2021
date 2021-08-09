@@ -1,4 +1,4 @@
-package com.example.ngay_8_4_2021.dangky;
+package com.example.ngay_8_4_2021.ui.dangky;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
